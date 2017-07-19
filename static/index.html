@@ -8,6 +8,7 @@
 
       .container {
         display: flex;
+        flex-direction: column;
         justify-content: center;
         align-items: center;
         font-family: 'Comic Sans MS';
@@ -24,12 +25,21 @@
 
       .space { display: inline-block; width: 1rem; }
 
+      .logo {
+        display: block;
+        width: 204px;
+        height: 203px;
+      }
+
     </style>
   </head>
   <body>
-    <div class="container"></div>
+    <div class="container">
+      <img class='logo' alt='logo' src='typeplanfunlogo.png'>
+    </div>
     <script>
       var container = document.getElementsByClassName('container')[0]
+      var textContainer = document.createElement('div')
       var classnames = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
       var text = 'Plan fun things with fun people with typeplan.fun'
       text.split('').forEach(function (char, i) {
@@ -42,8 +52,10 @@
           elem.className = classnames[i % classnames.length]
         }
 
-        container.appendChild(elem)
+        textContainer.appendChild(elem)
       })
+
+      container.appendChild(textContainer)
     </script>
   </body>
 </html>

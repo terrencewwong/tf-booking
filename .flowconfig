@@ -1,0 +1,8 @@
+[ignore]
+.*/node_modules/styled-components/src/.*
+
+[include]
+
+[libs]
+
+[options]

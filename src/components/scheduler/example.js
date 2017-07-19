@@ -3,4 +3,7 @@ import { storiesOf } from '@storybook/react'
 import Scheduler from '.'
 
 storiesOf('scheduler')
-  .add('default', () => <Scheduler />)
+  .add('default', () => {
+    const timeslots = [ 'Monday', 'Tuesday' ]
+    return <Scheduler timeslots={timeslots} />
+  })

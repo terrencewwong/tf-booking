@@ -25,6 +25,9 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
     "css-loader": "^0.28.4",
+    "flow-bin": "^0.50.0",
+    "flow-typed": "^2.1.5",
+    "flow-watch": "^1.1.1",
     "html-webpack-plugin": "^2.29.0",
     "nodemon": "^1.11.0",
     "style-loader": "^0.18.2",
@@ -42,6 +45,7 @@
     "start": "webpack-dev-server",
     "dev": "nodemon server.js",
     "storybook": "start-storybook -p 6006",
-    "build-storybook": "build-storybook"
+    "build-storybook": "build-storybook",
+    "flow:watch": "flow-watch"
   }
 }
