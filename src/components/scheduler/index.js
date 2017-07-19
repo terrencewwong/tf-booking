@@ -65,8 +65,14 @@ const Button = styled.button`
 
 `
 
+type Participant = {
+  name: string,
+  availableTimeslots: string[]
+}
+
 type Props = {
   timeslots: string[],
+  participants: Participant[],
   onSubmit: Function
 }
 
@@ -82,11 +88,14 @@ type State = {
 export default class Scheduler extends Component {
   props: Props
   state: State
+  currentRSVPCounts: {
+    [string]: number
+  }
 
   constructor (props: Props) {
     super(props)
 
-    const { timeslots } = props
+    const { timeslots, participants } = props
     const timeslotResponses = timeslots.map(timeslot => {
       return {
         timeslot,
@@ -97,14 +106,16 @@ export default class Scheduler extends Component {
     this.state = {
       timeslotResponses
     }
-  }
 
-  handleCheckboxChange = (e: Event) => {
-//    let { columns } = this.state
-//    const { name, checked } = e.target
-//    const { col, row } = this.convertNameToColRow(name)
-//    columns[col][row] = checked
-//    this.setState({ columns })
+    this.currentRSVPCounts = participants.reduce((counts, { availableTimeslots }) => {
+      availableTimeslots.forEach(timeslot => {
+        counts[timeslot] = counts[timeslot]
+          ? counts[timeslot] + 1
+          : 1
+      })
+
+      return counts
+    }, {})
   }
 
   convertColRowToName = (col: number, row: number) => `${col}:${row}`
@@ -113,11 +124,6 @@ export default class Scheduler extends Component {
     const [ col, row ] = name.split(':')
 
     return { col: Number(col), row: Number(row) }
-  }
-
-  getCountForColumn (col: number) {
-//    const { columns } = this.state
-//    return columns[col].reduce((count, checked) => count + Number(checked), 0)
   }
 
   handleRsvpChange = (e: Event) => {
@@ -133,12 +139,25 @@ export default class Scheduler extends Component {
   }
 
   render () {
-    const { timeslots, onSubmit } = this.props
+    const { timeslots, onSubmit, participants } = this.props
     const { timeslotResponses } = this.state
 
+    const participantRows = participants.map(({ name, availableTimeslots }) => {
+      const rsvpCells = timeslots.map(timeslot => {
+        return <Cell key={timeslot}>
+          { availableTimeslots.includes(timeslot) ? '🙋': '' }
+        </Cell>
+      })
+      return <Row>
+        <FirstColumnCell>{name}</FirstColumnCell>
+        {rsvpCells}
+      </Row>
+    })
+
     const timeslotRSVPCounts = timeslotResponses.map(({ timeslot, rsvp }) => {
+      const currentCount = this.currentRSVPCounts[timeslot] || 0
       return <Cell key={timeslot}>
-        {Number(rsvp)}
+        {currentCount + Number(rsvp)}
       </Cell>
     })
 
@@ -153,9 +172,15 @@ export default class Scheduler extends Component {
         {timeslots.map(timeslot => <Timeslot>{timeslot}</Timeslot>)}
       </TimeslotsRow>
       <Row>
-        <FirstColumnCell>Be the first to participate</FirstColumnCell>
+        <FirstColumnCell>
+          { participants.length
+            ? `${participants.length} participant(s)`
+            : 'Be the first to participate'
+          }
+        </FirstColumnCell>
         {timeslotRSVPCounts}
       </Row>
+      { participantRows }
       <Row>
         <FirstColumnCell>
           <input type="text" />

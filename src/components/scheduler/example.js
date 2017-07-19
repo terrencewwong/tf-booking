@@ -5,5 +5,10 @@ import Scheduler from '.'
 storiesOf('scheduler')
   .add('default', () => {
     const timeslots = [ 'Monday', 'Tuesday' ]
-    return <Scheduler timeslots={timeslots} />
+    const participants = [
+      { name: 'Javi', availableTimeslots: ['Monday'] },
+      { name: 'Laura', availableTimeslots: ['Tuesday'] },
+    ]
+
+    return <Scheduler timeslots={timeslots} participants={participants} />
   })
