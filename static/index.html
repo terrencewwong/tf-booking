@@ -1,0 +1,49 @@
+<html>
+  <head>
+    <title>Typeplan</title>
+    <style>
+      html, body, .container {
+        height: 100%;
+      }
+
+      .container {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-family: 'Comic Sans MS';
+        font-size: 4rem;
+      }
+
+      .red { color: red; }
+      .orange { color: orange; }
+      .yellow { color: yellow; }
+      .green { color: green; }
+      .blue { color: blue; }
+      .purple { color: purple; }
+      .pink { color: pink; }
+
+      .space { display: inline-block; width: 1rem; }
+
+    </style>
+  </head>
+  <body>
+    <div class="container"></div>
+    <script>
+      var container = document.getElementsByClassName('container')[0]
+      var classnames = ['red', 'orange', 'yellow', 'green', 'blue', 'purple', 'pink']
+      var text = 'Plan fun things with fun people with typeplan.fun'
+      text.split('').forEach(function (char, i) {
+        var elem = document.createElement('span')
+        elem.innerHTML = char
+
+        if (char === ' ') {
+          elem.className = 'space'
+        } else {
+          elem.className = classnames[i % classnames.length]
+        }
+
+        container.appendChild(elem)
+      })
+    </script>
+  </body>
+</html>
