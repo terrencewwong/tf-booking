@@ -74,6 +74,10 @@ export default class Home extends Component {
     const request = createPoll({
       id,
       payload: { timeslots }
+    }).then(response => {
+      if (response.status >= 400) {
+        console.log('bad request!')
+      }
     })
 
     this.setState({ redirect: true })

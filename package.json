@@ -52,6 +52,7 @@
     ]
   },
   "scripts": {
+    "start": "node server.js",
     "dev:frontend": "webpack --watch",
     "dev:backend": "nodemon server.js",
     "storybook": "start-storybook -p 6006",

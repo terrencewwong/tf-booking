@@ -9,7 +9,8 @@ const server = new Hapi.Server({
                 relativeTo: Path.join(__dirname, 'dist')
             }
         }
-    }
+    },
+    debug: { request: ['error'] }
 })
 server.connection({ port: 3000 })
 
@@ -44,9 +45,7 @@ server.route({
   method: 'POST',
   path: '/api/polls/{id}',
   handler: function (request, reply) {
-    reply({
-      yolo: 'always'
-    })
+    reply().code(400)
   }
 })
 
