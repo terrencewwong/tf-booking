@@ -49,8 +49,8 @@
     ]
   },
   "scripts": {
-    "frontend": "webpack --watch",
-    "dev": "nodemon server.js",
+    "dev:frontend": "webpack --watch",
+    "dev:backend": "nodemon server.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",
     "flow:watch": "flow-watch"

@@ -1,5 +1,9 @@
 import React, { Component } from 'react'
-import { makeWidget } from '@typeform/embed'
+let makeWidget
+makeWidget = typeof document !== 'undefined'
+  ? require('@typeform/embed').makeWidget
+  : null
+
 import { Route } from 'react-router-dom'
 import paths from '../paths'
 
@@ -14,7 +18,7 @@ class Typeform extends Component {
   }
 
   componentDidMount () {
-    makeWidget(this.container, 'https://terrencewong1.typeform.com/to/hKy3XP')
+    makeWidget && makeWidget(this.container, 'https://terrencewong1.typeform.com/to/hKy3XP')
     this.container.querySelector('iframe').focus()
     window.addEventListener('message', this.handleEmbedMessage)
   }

@@ -23,11 +23,11 @@ module.exports = {
   },
 
   plugins: [
-    new StaticSiteGenerator('main', ['/'], { template }),
-    new BrowserSyncPlugin({
-      host: 'localhost',
-      port: 4444,
-      server: { baseDir: ['dist'] }
-    })
+    new StaticSiteGenerator('main', ['/'], { template })
+//    new BrowserSyncPlugin({
+//      host: 'localhost',
+//      port: 4444,
+//      server: { baseDir: ['dist'] }
+//    })
   ]
 }
