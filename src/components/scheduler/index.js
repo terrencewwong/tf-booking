@@ -3,6 +3,7 @@ import React, { Component } from 'react'
 import styled from 'styled-components'
 import type { Children } from 'react'
 import Text from '../text'
+import { getPoll, updatePoll } from '../../transport'
 
 const FIRST_COLUMN_WIDTH = '11rem'
 
@@ -52,6 +53,7 @@ type Participant = {
 }
 
 type Props = {
+  id: string,
   timeslots: string[],
   participants: Participant[],
   onSubmit: Function
@@ -63,6 +65,9 @@ type TimeslotResponse = {
 }
 
 type State = {
+  timeslots: string[],
+  participants: Participant[],
+  name: string,
   timeslotResponses: TimeslotResponse[]
 }
 
@@ -92,18 +97,22 @@ export default class Scheduler extends Component {
     })
 
     this.state = {
+      timeslots,
+      participants,
+      name: '',
       timeslotResponses
     }
 
-    this.currentRSVPCounts = participants.reduce((counts, { availableTimeslots }) => {
-      availableTimeslots.forEach(timeslot => {
-        counts[timeslot] = counts[timeslot]
-          ? counts[timeslot] + 1
-          : 1
-      })
+  }
 
-      return counts
-    }, {})
+  componentDidMount () {
+    const { id } = this.props
+
+    getPoll(id)
+      .then(data => {
+        console.log(data)
+        this.setState({ ...data, redirect: false })
+      })
   }
 
   convertColRowToName = (col: number, row: number) => `${col}:${row}`
@@ -125,10 +134,58 @@ export default class Scheduler extends Component {
 
     this.setState({ timeslotResponses })
   }
+  handleInputChange = () => {
+    this.setState({ name: this.input.value })
+  }
+
+  handleSubmit = () => {
+    const { id } = this.props
+    const { timeslots, name, participants, timeslotResponses } = this.state
+    const availableTimeslots = timeslotResponses
+      .filter(timeslotResponse => timeslotResponse.rsvp)
+      .map(({ timeslot }) => timeslot)
+
+    participants.push({
+      name,
+      availableTimeslots
+    })
+
+    const payload = {
+      participants
+    }
+
+    updatePoll({
+      id,
+      payload
+    })
+
+    this.setState({
+      name: '',
+      timeslotResponses: timeslots.map(timeslot => {
+        return {
+          timeslot,
+          rsvp: false
+        }
+      }),
+      participants
+    })
+  }
 
   render () {
-    const { timeslots, onSubmit, participants } = this.props
-    const { timeslotResponses } = this.state
+    const { onSubmit } = this.props
+    const { timeslots, participants } = this.state
+    const { name, timeslotResponses } = this.state
+
+    const currentRSVPCounts = participants.reduce((counts, { availableTimeslots }) => {
+      availableTimeslots.forEach(timeslot => {
+        counts[timeslot] = counts[timeslot]
+          ? counts[timeslot] + 1
+          : 1
+      })
+
+      return counts
+    }, {})
+
 
     const participantRows = participants.map(({ name, availableTimeslots }) => {
       const rsvpCells = timeslots.map(timeslot => {
@@ -143,7 +200,7 @@ export default class Scheduler extends Component {
     })
 
     const timeslotRSVPCounts = timeslotResponses.map(({ timeslot, rsvp }) => {
-      const currentCount = this.currentRSVPCounts[timeslot] || 0
+      const currentCount = currentRSVPCounts[timeslot] || 0
       return <Cell key={timeslot}>
         {currentCount + Number(rsvp)}
       </Cell>
@@ -171,11 +228,11 @@ export default class Scheduler extends Component {
       { participantRows }
       <Row>
         <FirstColumnCell>
-          <input type="text" />
+          <input value={name} type="text" ref={input => this.input = input} onChange={this.handleInputChange} />
         </FirstColumnCell>
         { timeslotResponseCheckboxes }
       </Row>
-      <Button type='submit' onClick={onSubmit}>Done</Button>
+      <Button type='submit' onClick={this.handleSubmit}>Done</Button>
     </div>
   }  
 }

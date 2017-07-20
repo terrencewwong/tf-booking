@@ -12,6 +12,9 @@ const server = new Hapi.Server({
     },
     debug: { request: ['error'] }
 })
+
+server.app.db = {}
+
 server.connection({ port: 3000 })
 
 server.register(Inert, () => {})
@@ -42,10 +45,50 @@ server.route({
 })
 
 server.route({
+  method: 'GET',
+  path: '/api/polls/{id}',
+  handler: function (request, reply) {
+    const { id } = request.params
+    const { db } = request.server.app
+
+    const response = db[id]
+    if (!response) {
+      return reply().code(404)
+    }
+
+    reply(response)
+  }
+})
+
+server.route({
   method: 'POST',
   path: '/api/polls/{id}',
   handler: function (request, reply) {
-    reply().code(400)
+    const { id } = request.params
+    const { tfUrl, timeslots} = request.payload
+    request.server.app.db[id] = { tfUrl, timeslots }
+    reply().code(201)
+  }
+})
+
+server.route({
+  method: 'PUT',
+  path: '/api/polls/{id}',
+  handler: function (request, reply) {
+    const { id } = request.params
+    const { participants } = request.payload
+    const { db } = request.server.app
+
+    const currentData = db[id]
+    if (!currentData) {
+      return reply().code(404)
+    }
+
+    request.server.app.db[id] = Object.assign({}, currentData, {
+      participants
+    })
+
+    reply(request.server.app.db[id]).code(200)
   }
 })
 

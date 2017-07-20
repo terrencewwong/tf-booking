@@ -1,8 +1,8 @@
 import React from 'react'
-import Scheduler from '../components/scheduler'
+import EmbeddedTypeform from '../components/embedded-typeform'
 
 export default ({ history, location, match }) => {
   const state = location.state || {}
-
-  return <Scheduler {...state} />
+  const { id } = match.params
+  return <EmbeddedTypeform id={id} {...state} />
 }

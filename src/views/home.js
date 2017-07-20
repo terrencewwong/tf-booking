@@ -73,26 +73,21 @@ export default class Home extends Component {
 
     const request = createPoll({
       id,
-      payload: { timeslots }
-    }).then(response => {
-      if (response.status >= 400) {
-        console.log('bad request!')
-      }
+      payload: { tfUrl, timeslots }
+    }).then(data => {
+      this.setState({ redirect: true })
     })
-
-    this.setState({ redirect: true })
   }
 
   render () {
     const { selectedDays, tfUrl, redirect } = this.state
-
 
     if (redirect) {
       const { id } = this
       const timeslots = selectedDays.map(date => friendlyDate(date))
       return <Redirect push to={{
         pathname: `${paths.poll}/${id}`,
-        state: { timeslots }
+        state: { tfUrl, id, timeslots }
       }} />
     }
 
