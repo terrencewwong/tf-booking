@@ -7,6 +7,7 @@
   "license": "MIT",
   "dependencies": {
     "@typeform/embed": "^0.1.4",
+    "handlebars": "^4.0.10",
     "hapi": "^16.4.3",
     "inert": "^4.2.0",
     "react": "^15.6.1",
@@ -15,7 +16,8 @@
     "react-router": "^4.1.2",
     "react-router-dom": "^4.1.2",
     "react-time-input": "^0.0.16",
-    "styled-components": "^2.1.1"
+    "styled-components": "^2.1.1",
+    "vision": "^4.1.1"
   },
   "devDependencies": {
     "@storybook/react": "^3.1.9",
@@ -25,12 +27,16 @@
     "babel-preset-es2015": "^6.24.1",
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-2": "^6.24.1",
+    "browser-sync": "^2.18.12",
+    "browser-sync-webpack-plugin": "^1.2.0",
     "css-loader": "^0.28.4",
+    "ejs": "^2.5.6",
     "flow-bin": "^0.50.0",
     "flow-typed": "^2.1.5",
     "flow-watch": "^1.1.1",
     "html-webpack-plugin": "^2.29.0",
     "nodemon": "^1.11.0",
+    "static-site-generator-webpack-plugin": "^3.4.1",
     "style-loader": "^0.18.2",
     "webpack": "^3.3.0",
     "webpack-dev-server": "^2.5.1"
@@ -43,7 +49,7 @@
     ]
   },
   "scripts": {
-    "start": "webpack-dev-server",
+    "frontend": "webpack --watch",
     "dev": "nodemon server.js",
     "storybook": "start-storybook -p 6006",
     "build-storybook": "build-storybook",

@@ -14,6 +14,23 @@ const server = new Hapi.Server({
 server.connection({ port: 3000 })
 
 server.register(Inert, () => {})
+server.register(require('vision'), (err) => {
+  server.views({
+    engines: {
+      html: require('handlebars')
+    },
+    relativeTo: __dirname,
+    path: 'dist'
+  })
+})
+
+server.route({
+  method: 'GET',
+  path: '/',
+  handler: {
+    view: 'index'
+  }
+})
 
 server.route({
     method: 'GET',
