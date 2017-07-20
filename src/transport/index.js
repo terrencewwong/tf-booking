@@ -1,4 +1,4 @@
-import 'isomorphic-fetch'
+if (typeof document !== 'undefined') require('isomorphic-fetch')
 
 function fetchFrom ({ method, url, body }) {
   const data = {
@@ -10,4 +10,12 @@ function fetchFrom ({ method, url, body }) {
   }
 
   return fetch(url, data)
+}
+
+export const createPoll = ({ id, payload }) => {
+  return fetchFrom({
+    method: 'POST',
+    url: `/api/polls/${id}`,
+    body: payload
+  })
 }

@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { Redirect } from 'react-router'
 import { DateUtils } from 'react-day-picker'
 import uuidv4 from 'uuid/v4'
-import fetchFrom from '../fetch-from'
+import { createPoll } from '../transport'
 import TimeslotPicker from '../components/timeslot-picker'
 import paths from '../paths'
 import friendlyDate from '../isomorphic/friendly-date'
@@ -67,18 +67,28 @@ export default class Home extends Component {
   }
 
   handleSubmit = () => {
-    fetchFrom(
+    const { id } = this
+    const { selectedDays, tfUrl } = this.state
+    const timeslots = selectedDays.map(date => friendlyDate(date))
+
+    const request = createPoll({
+      id,
+      payload: { timeslots }
+    })
+
     this.setState({ redirect: true })
   }
 
   render () {
-    const { selectedDays, timeslots, tfUrl, redirect } = this.state
+    const { selectedDays, tfUrl, redirect } = this.state
+
 
     if (redirect) {
       const { id } = this
+      const timeslots = selectedDays.map(date => friendlyDate(date))
       return <Redirect push to={{
         pathname: `${paths.poll}/${id}`,
-        state: { timeslots: selectedDays.map(date => friendlyDate(date)) }
+        state: { timeslots }
       }} />
     }
 
@@ -92,7 +102,7 @@ export default class Home extends Component {
       />
       <TimeslotPicker
         selectedDays={selectedDays}
-        timeslots={timeslots}
+        timeslots={[]}
         onDayClick={this.handleDayClick}
       />
       <button onClick={this.handleSubmit}>Done</button>
