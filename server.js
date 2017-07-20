@@ -33,6 +33,24 @@ server.route({
 })
 
 server.route({
+  method: 'GET',
+  path: '/poll/{id}',
+  handler: {
+    view: 'index'
+  }
+})
+
+server.route({
+  method: 'POST',
+  path: '/api/polls/{id}',
+  handler: function (request, reply) {
+    reply({
+      yolo: 'always'
+    })
+  }
+})
+
+server.route({
     method: 'GET',
     path: '/{param*}',
     handler: {

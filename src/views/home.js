@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { Redirect } from 'react-router'
 import { DateUtils } from 'react-day-picker'
 import uuidv4 from 'uuid/v4'
+import fetchFrom from '../fetch-from'
 import TimeslotPicker from '../components/timeslot-picker'
 import paths from '../paths'
 import friendlyDate from '../isomorphic/friendly-date'
@@ -66,6 +67,7 @@ export default class Home extends Component {
   }
 
   handleSubmit = () => {
+    fetchFrom(
     this.setState({ redirect: true })
   }
 
