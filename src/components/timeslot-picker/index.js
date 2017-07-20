@@ -15,8 +15,13 @@ type Timeslot = {
   end: string
 }
 
-type State = {
+type Props = {
   selectedDays: Date[],
+  timeslots: Timeslot[],
+  onDayClick: Function
+}
+
+type State = {
   timeslots: Timeslot[]
 }
 
@@ -83,46 +88,33 @@ const DeletableTimeslot = (props: DeleteableTimeslotProps) => {
 }
 
 export default class TimeslotPicker extends Component {
+  props: Props
   state: State = {
-    selectedDays: [],
     timeslots: []
   }
 
-  handleDayClick = (day: Date, modifiers: Modifiers) => {
-    const { selected } = modifiers
-    const { selectedDays } = this.state
-
-    if (selected) {
-      const selectedIndex = selectedDays.findIndex(selectedDay =>
-        DateUtils.isSameDay(selectedDay, day)
-      )
-      selectedDays.splice(selectedIndex, 1)
-    } else {
-      selectedDays.push(day)
-    }
-    this.setState({ selectedDays })
-  }
-
-  addTimeslot = () => {
-    const { timeslots } = this.state
-    timeslots.push({ start: '', end: '' })
-    this.setState({ timeslots })
-  }
-
-  deleteTimeslotAtIndex = (index: number) => {
-    const { timeslots } = this.state
-    timeslots.splice(index, 1)
-    this.setState({ timeslots })
-  }
+//  addTimeslot = () => {
+//    const { timeslots } = this.state
+//    timeslots.push({ start: '', end: '' })
+//    this.setState({ timeslots })
+//  }
+//
+//  deleteTimeslotAtIndex = (index: number) => {
+//    const { timeslots } = this.state
+//    timeslots.splice(index, 1)
+//    this.setState({ timeslots })
+//  }
 
   render () {
-    const { timeslots } = this.state
+    const { selectedDays, onDayClick } = this.props
+//    const { timeslots } = this.state
 
     return <FlexWrapper>
       <DayPicker
-        selectedDays={this.state.selectedDays}
-        onDayClick={this.handleDayClick}
+        selectedDays={selectedDays}
+        onDayClick={onDayClick}
       />
+      { /*
       <div>
         {timeslots.map((timeslot, index) => (
           <DeletableTimeslot
@@ -134,6 +126,7 @@ export default class TimeslotPicker extends Component {
           <Button onClick={this.addTimeslot}>Add Timeslot</Button>
         </FloatRight>
       </div>
+    */}
     </FlexWrapper>
   }
 }
