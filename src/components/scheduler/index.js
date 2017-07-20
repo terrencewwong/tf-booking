@@ -1,22 +1,8 @@
 // @flow
 import React, { Component } from 'react'
-import styled, { css } from 'styled-components'
+import styled from 'styled-components'
 import type { Children } from 'react'
-
-const FONT_SIZES = {
-  size0: css`
-    font-size: 14px;
-    line-height: 3;
-  `,
-  size1: css`
-    font-size: 16px;
-    line-height: 1.5;
-  `,
-  size2: css`
-    font-size: 24px;
-    line-height: 1.5;
-  `
-}
+import Text from '../text'
 
 const FIRST_COLUMN_WIDTH = '11rem'
 
@@ -48,11 +34,6 @@ const Cell = (props: cellProps) => (
 
 const FirstColumnCell = styled(Cell)`
   width: ${FIRST_COLUMN_WIDTH};
-`
-
-const Text = styled.div`
-  margin: 0;
-  ${({ size }) => FONT_SIZES[size]}
 `
 
 const Timeslot = ({ children }) => {

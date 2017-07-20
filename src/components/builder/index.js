@@ -3,16 +3,6 @@ import styled from 'styled-components'
 import DayPicker, { DateUtils } from 'react-day-picker'
 import 'react-day-picker/lib/style.css'
 
-const Row = styled.div`
-  display: flex
-`
-const Cell = styled.div`
-  box-sizing: border-box
-  border: 1px solid blue
-  min-width: 5.5rem
-  background: red
-`
-
 export default class Builder extends React.Component {
   state = {
     selectedDays: [],
