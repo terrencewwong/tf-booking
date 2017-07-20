@@ -68,9 +68,16 @@ type State = {
 
 export default class Scheduler extends Component {
   props: Props
+  static defaultProps: Props
   state: State
   currentRSVPCounts: {
     [string]: number
+  }
+
+  static defaultProps = {
+    timeslots: [],
+    participants: [],
+    onSubmit: () => {}
   }
 
   constructor (props: Props) {

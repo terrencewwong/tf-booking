@@ -1,13 +1,16 @@
 // @flow
 import React, { Component } from 'react'
 import styled from 'styled-components'
+import { Redirect } from 'react-router'
 import { DateUtils } from 'react-day-picker'
 import TimeslotPicker from '../components/timeslot-picker'
+import paths from '../paths'
 
 type State = {
   tfUrl: string,
   selectedDays: Date[],
-  timeslots: Timeslot[]
+  timeslots: Timeslot[],
+  redirect: boolean
 }
 
 type Timeslot = {
@@ -32,7 +35,8 @@ export default class Home extends Component {
   state: State = {
     tfUrl: '',
     selectedDays: [],
-    timeslots: []
+    timeslots: [],
+    redirect: false
   }
 
   handleDayClick = (day: Date, modifiers: Modifiers) => {
@@ -55,11 +59,21 @@ export default class Home extends Component {
   }
 
   handleSubmit = () => {
-    console.log(this.state)
+    this.setState({ redirect: true })
   }
 
   render () {
-    const { selectedDays, timeslots, tfUrl } = this.state
+    const { selectedDays, timeslots, tfUrl, redirect } = this.state
+
+    if (redirect) {
+      return <Redirect push to={{
+        pathname: paths.poll,
+        state: { yolo: true }
+      }} />
+    }
+
+
+
     return <FlexWrapper>
       <input
         type="text"

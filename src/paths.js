@@ -1,5 +1,5 @@
 export default {
-  scheduler: '/scheduler',
+  poll: '/poll',
   builder: '/builder',
   root: '/'
 }
