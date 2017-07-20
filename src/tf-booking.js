@@ -1,15 +1,17 @@
 import React from 'react'
 import {
-  Route
+  Route,
+  Switch
 } from 'react-router'
 import EmbeddedTypeform from './components/embedded-typeform'
+import Home from './views/home'
 import paths from './paths'
 
 const Scheduler = () => <h1>hello</h1>
 
 export default () => (
-  <div>
-    <Route exact path={paths.root} component={EmbeddedTypeform}/>
+  <Switch>
+    <Route exact path={paths.root} component={Home}/>
     <Route exact path={paths.scheduler} component={Scheduler} />
-  </div>
+  </Switch>
 )
