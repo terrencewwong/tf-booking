@@ -11,6 +11,6 @@ import paths from './paths'
 export default () => (
   <Switch>
     <Route exact path={paths.root} component={Home}/>
-    <Route exact path={paths.poll} component={Poll} />
+    <Route exact path={`${paths.poll}/:id`} component={Poll} />
   </Switch>
 )
